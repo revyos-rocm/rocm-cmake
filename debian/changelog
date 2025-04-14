@@ -1,0 +1,17 @@
+rocm-cmake (6.2.4-3) unstable; urgency=medium
+
+  * Depend: change depend with new rocm-core
+
+ --  <chenxuan@iscas.ac.cn>  Tue, 15 Apr 2025 00:33:46 +0800
+
+rocm-cmake (6.2.4-2) unstable; urgency=medium
+
+  * Depend: remove amd-llvm
+
+ --  CHEN Xuan <chenxuan@iscas.ac.cn>  Wed, 02 Apr 2025 17:50:45 +0800
+
+rocm-cmake (6.2.4-1) unstable; urgency=medium
+
+  * Initial release. 
+
+ -- CHEN Xuan <chenxuan@iscas.ac.cn>  Fri, 24 Jan 2025 11:33:11 +0800
