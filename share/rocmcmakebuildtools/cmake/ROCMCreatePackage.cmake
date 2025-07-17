@@ -326,24 +326,44 @@ macro(rocm_create_package)
     if (ROCM_USE_DEV_COMPONENT)
         rocm_compute_component_package_name(devel "${CPACK_PACKAGE_NAME}" "${PARSE_SUFFIX}" "${PARSE_HEADER_ONLY}")
         list(APPEND PARSE_COMPONENTS devel)
-        rocm_join_if_set(", " CPACK_DEBIAN_RUNTIME_PACKAGE_RECOMMENDS
-            "${CPACK_DEBIAN_DEVEL_PACKAGE_NAME} (>=${CPACK_PACKAGE_VERSION})")
+        if (NOT ENABLE_ASAN_PACKAGING)
+            # Since no asan-dev package available, avoid recommends for ASAN
+            rocm_join_if_set(", " CPACK_DEBIAN_RUNTIME_PACKAGE_RECOMMENDS
+                "${CPACK_DEBIAN_DEVEL_PACKAGE_NAME} (>=${CPACK_PACKAGE_VERSION})"
+            )
+        endif()
 
         rocm_find_program_version(rpmbuild GREATER_EQUAL 4.12.0 QUIET)
-        if(rpmbuild_VERSION_OK)
+        if(rpmbuild_VERSION_OK AND NOT ENABLE_ASAN_PACKAGING)
+            # Since no asan-dev package available, avoid suggests for ASAN
             rocm_join_if_set(", " CPACK_RPM_RUNTIME_PACKAGE_SUGGESTS
                 "${CPACK_RPM_DEVEL_PACKAGE_NAME} >= ${CPACK_PACKAGE_VERSION}"
             )
         endif()
         if(PARSE_HEADER_ONLY OR NOT BUILD_SHARED_LIBS)
-            rocm_join_if_set(", "
-                CPACK_DEBIAN_DEVEL_PACKAGE_PROVIDES
-                CPACK_DEBIAN_PACKAGE_PROVIDES
-                "${CPACK_PACKAGE_NAME} (= ${CPACK_PACKAGE_VERSION})")
-            rocm_join_if_set(", "
-                CPACK_RPM_DEVEL_PACKAGE_PROVIDES
-                CPACK_DEBIAN_PACKAGE_PROVIDES
-                "${CPACK_PACKAGE_NAME} = ${CPACK_PACKAGE_VERSION}")
+            if(DEFINED CPACK_DEBIAN_DEVEL_PACKAGE_PROVIDES)
+                rocm_join_if_set(", "
+                    CPACK_DEBIAN_DEVEL_PACKAGE_PROVIDES
+                    "${CPACK_PACKAGE_NAME} (= ${CPACK_PACKAGE_VERSION})"
+                )
+            else()
+                rocm_join_if_set(", "
+                    CPACK_DEBIAN_DEVEL_PACKAGE_PROVIDES
+                    "${CPACK_DEBIAN_PACKAGE_PROVIDES}"
+                    "${CPACK_PACKAGE_NAME} (= ${CPACK_PACKAGE_VERSION})")
+            endif()
+
+            if(DEFINED CPACK_RPM_DEVEL_PACKAGE_PROVIDES)
+                rocm_join_if_set(", "
+                    CPACK_RPM_DEVEL_PACKAGE_PROVIDES
+                    "${CPACK_PACKAGE_NAME}"
+                )
+            else()
+                rocm_join_if_set(", "
+                    CPACK_RPM_DEVEL_PACKAGE_PROVIDES
+                    "${CPACK_RPM_PACKAGE_PROVIDES}"
+                    "${CPACK_PACKAGE_NAME}")
+            endif()
         else()
             rocm_package_add_dependencies(COMPONENT devel DEPENDS "${CPACK_PACKAGE_NAME} >= ${CPACK_PACKAGE_VERSION}")
         endif()
