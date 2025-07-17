@@ -10,8 +10,8 @@ Build-Depends:
  rocm-env,
 Standards-Version: 4.7.0
 Homepage: https://github.com/ROCm/rocm-cmake
-Vcs-Browser: https://github.com/r-rocm/rocm-cmake
-Vcs-Git: https://github.com/r-rocm/rocm-cmake.git
+Vcs-Browser: https://github.com/revyos-rocm/rocm-cmake
+Vcs-Git: https://github.com/revyos-rocm/rocm-cmake.git
 
 Package: rocm-cmake
 Architecture: any

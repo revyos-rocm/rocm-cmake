@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Source: https://github.com/ROCm/rocm-cmake/
-Upstream-Name: rocm-cmake-rocm
+Upstream-Name: rocm-cmake
 
 Files:
  *
