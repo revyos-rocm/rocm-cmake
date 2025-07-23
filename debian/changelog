@@ -1,3 +1,9 @@
+rocm-cmake (6.4.2-1) trixie; urgency=medium
+
+  * Release 6.4.2-1
+
+ --  <chenxuan@iscas.ac.cn>  Wed, 23 Jul 2025 10:11:04 +0800
+
 rocm-cmake (6.4.1-1) trixie; urgency=medium
 
   * Release 6.4.1.
